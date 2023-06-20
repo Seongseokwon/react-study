@@ -1,11 +1,18 @@
+import { RecoilRoot } from 'recoil';
 import './App.css';
 import Login from "./pages/auth/Login";
+import { useEffect } from 'react';
+
 
 function App() {
+    useEffect(() => {
+        
+    }, []);
+
     return (
-        <div>
+        <RecoilRoot>
             <Login />
-        </div>
+        </RecoilRoot>
     );
 }
 
