@@ -5,6 +5,7 @@ const useAuthentication = (value) => {
 
     const onLoginSuccess = useCallback((userInfo) => {
         console.log(userInfo);
+        window.sessionStorage.setItem('')
     });
 
     const onLogOut = useCallback(() => {

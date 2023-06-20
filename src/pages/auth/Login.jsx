@@ -1,22 +1,19 @@
 import React from "react";
 import useInput from "../../hooks/useInput";
-import { getAuth, signInWithPopup, signInWithEmailAndPassword, GoogleAuthProvider } from 'firebase/auth'
-import { firebaseApp } from "../../firebase";
-import useAuthentication from "../../hooks/auth/useAuthentication";
+import { signInWithPopup, createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthProvider, signInWithRedirect } from 'firebase/auth'
+import { fAuthService } from '../../firebase'
 
 export default function Login() {
-  const firebaseAuth = getAuth(firebaseApp);
+  const authService = fAuthService;
 
   const [{ email, password }, onChange, inputReset] = useInput({
     email: "",
     password: "",
   });
 
-  const [onLoginSuccess] = useAuthentication();
-
   const handleLogin = async () => {
     try {
-        const curUserInfo = await signInWithEmailAndPassword(firebaseAuth, email, password);
+        const curUserInfo = await signInWithEmailAndPassword(authService, email, password);
         console.log(curUserInfo);
     } catch(err) {
         console.log(err);
@@ -25,9 +22,8 @@ export default function Login() {
 
   const handleGoogleLogin = async () => {
     try {
-        const auth = getAuth();
-        const result = await signInWithPopup(auth, new GoogleAuthProvider());
-        onLoginSuccess(result);
+        const userInfo = await signInWithRedirect(authService, new GoogleAuthProvider());
+        // TODO : 저장된 사용자인지 확인해서 그렇지 않다면 FireStor에 유저정보 저장
     } catch(err) {
         console.log(err);
     }

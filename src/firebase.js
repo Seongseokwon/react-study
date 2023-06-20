@@ -1,4 +1,5 @@
 import { initializeApp } from 'firebase/app'
+import { getAuth, setPersistence } from 'firebase/auth';
 
 const firebaseConfig = {
     apiKey: process.env.REACT_APP_FB_API_KEY,
@@ -9,4 +10,5 @@ const firebaseConfig = {
     appId: process.env.REACT_APP_FB_APP_ID
 }
 
-export const firebaseApp = initializeApp(firebaseConfig);
+initializeApp(firebaseConfig);
+export const fAuthService = getAuth();
