@@ -1,35 +1,19 @@
-import { useEffect, useState } from 'react';
-import { RecoilRoot } from 'recoil';
-import './App.css';
+import React from 'react';
 
-import Login from "./pages/auth/Login";
-import { fAuthService } from './firebase'
+import { Routes, Route } from 'react-router-dom';
+
+import Main from './pages/Main';
+import Login from './pages/auth/Login';
 
 function App() {
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
-    
-    useEffect(() => {
-        fAuthService.onAuthStateChanged((user) => {
-            if (user) {
-                console.log('유저 정보 O');
-                setIsAuthenticated(true);
-            } else {
-                console.log('유저 정보 X');
-                setIsAuthenticated(false);
-            }
-        })
-    }, []);
 
-    const handleLogOut = () => {
-        fAuthService.signOut();
-    }
 
     return (
-        <RecoilRoot>
-            {!isAuthenticated && <Login />}
-            {isAuthenticated && <div>
-                로그인 성공 <button type="button" onClick={handleLogOut}>로그아웃 </button></div>}
-        </RecoilRoot>
+        <Routes>
+            <Route path='/' element={<Main />} />
+            <Route path='/signin' element={<Login />} />
+            
+        </Routes>
     );
 }
 
