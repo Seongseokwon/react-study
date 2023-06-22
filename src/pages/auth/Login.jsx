@@ -11,8 +11,10 @@ import { fAuthService } from "../../firebase";
 import { FadeLoader } from "react-spinners";
 import { useRecoilState } from "recoil";
 import { spinnerState } from "../../recoil/spinner/atoms";
+import {useNavigate} from "react-router-dom";
 export default function Login() {
   const authService = fAuthService;
+  const navigate = useNavigate();
 
   const [spinnerShow, setSpinnerShow] = useRecoilState(spinnerState);
   const [{ email, password }, onChange, inputReset] = useInput({
@@ -28,7 +30,8 @@ export default function Login() {
         email,
         password
       );
-      console.log(curUserInfo);
+
+      navigate('/todo')
     } catch (err) {
       console.log(err);
       setSpinnerShow(false);
