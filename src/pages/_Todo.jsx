@@ -1,8 +1,9 @@
 import {useEffect, useState} from "react";
 import {v4 as uuidv4} from 'uuid';
 import useInput from "../hooks/useInput";
+import TodoHeader from "../components/todo/_TodoHeader";
 
-export default function Todo() {
+export default function _Todo() {
     const [todoList, setTodoList] = useState([]);
     const [{todo}, onChange, inputReset] = useInput({todo: ""});
 
@@ -29,7 +30,7 @@ export default function Todo() {
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: createTodo
+                body: JSON.stringify(createTodo)
             });
             inputReset();
             await fetchingTodoList();
@@ -42,13 +43,12 @@ export default function Todo() {
 
     return <div>
         {/* todo GNB영역 */}
-        <div>
-            GNB
-        </div>
+        <TodoHeader/>
         {/* todo list 영역 */}
         <div>
             <ul>
-                {todoList.map(item => (<li key={item.id}>{item.todo}</li>))}
+                {todoList.map(item => (
+                    <li key={item.id}><input type="checkbox" />{item.todo} <button type="button"> 삭제</button></li>))}
             </ul>
         </div>
 
@@ -58,3 +58,12 @@ export default function Todo() {
         </form>
     </div>
 }
+
+
+/*
+<Style.TodoLayout>
+    <TodoHeader />
+    <TodoContent />
+    <TodoInput />
+</Style.TodoLayout>
+*/

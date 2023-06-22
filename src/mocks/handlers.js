@@ -15,8 +15,17 @@ export const handlers = [
     }),
 
     rest.post('/todo', (req, res, ctx) => {
-        todos.push({id: uuidv4(), todo: `rando string ${num++}`, status: 'AVAILABLE'});
+        console.log(req.body);
+        const data = req.body;
+
+        todos.push({id: data.id, todo: data.todo, status: 'AVAILABLE'});
 
         return res(ctx.status(201));
+    }),
+
+    rest.delete('/todo', (req, res, ctx) => {
+
+        return res(ctx.status(200));
     })
 ]
+

@@ -5,7 +5,7 @@ import { Routes, Route } from 'react-router-dom';
 import Main from './pages/Main';
 import Login from './pages/auth/Login';
 import Signup from "./pages/auth/Signup";
-import Todo from "./pages/Todo";
+import _Todo from "./pages/_Todo";
 
 function App() {
 
@@ -21,7 +21,7 @@ function App() {
             <Route path='/' element={<Main />} />
             <Route path='/signin' element={<Login />} />
             <Route path='/signup' element={<Signup />} />
-            <Route path='/todo' element={<Todo />} />
+            <Route path='/todo' element={<_Todo />} />
         </Routes>
     );
 }
