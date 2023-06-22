@@ -5,6 +5,13 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { RecoilRoot } from 'recoil';
 import { BrowserRouter } from 'react-router-dom';
+import { worker } from './mocks/worker';
+
+
+if (process.env.NODE_ENV === 'development') {
+    console.log(process.env);
+    worker.start();
+}
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
