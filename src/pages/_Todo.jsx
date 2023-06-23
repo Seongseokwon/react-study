@@ -2,6 +2,9 @@ import {useEffect, useState} from "react";
 import {v4 as uuidv4} from 'uuid';
 import useInput from "../hooks/useInput";
 import TodoHeader from "../components/todo/_TodoHeader";
+import TodoInput from "../components/todo/_TodoInput";
+import TodoList from "../components/todo/_TodoList";
+import {StyleTodoLayout} from "../components/todo/styles/_Todo.styled";
 
 export default function _Todo() {
     const [todoList, setTodoList] = useState([]);
@@ -37,26 +40,13 @@ export default function _Todo() {
         } catch (err) {
             console.log(err);
         }
-
-
     }
 
-    return <div>
-        {/* todo GNB영역 */}
+    return <StyleTodoLayout>
         <TodoHeader/>
-        {/* todo list 영역 */}
-        <div>
-            <ul>
-                {todoList.map(item => (
-                    <li key={item.id}><input type="checkbox" />{item.todo} <button type="button"> 삭제</button></li>))}
-            </ul>
-        </div>
-
-        <form onSubmit={handeSubmit}>
-            <input type="text" name="todo" value={todo} onChange={onChange}/>
-            <button type="submit">등록</button>
-        </form>
-    </div>
+        <TodoList />
+        <TodoInput onSubmit={handeSubmit}/>
+    </StyleTodoLayout>
 }
 
 
