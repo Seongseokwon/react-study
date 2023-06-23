@@ -5,6 +5,7 @@ const useInput = (value) => {
 
     const onChange = useCallback(event => {
         const {name, value} = event.target;
+        console.log(value)
         setInputs(prev => ({...prev, [name]: value}));
     }, [])
 

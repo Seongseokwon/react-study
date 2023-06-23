@@ -1,14 +1,11 @@
 import {useEffect, useState} from "react";
-import {v4 as uuidv4} from 'uuid';
-import useInput from "../hooks/useInput";
 import TodoHeader from "../components/todo/_TodoHeader";
 import TodoInput from "../components/todo/_TodoInput";
 import TodoList from "../components/todo/_TodoList";
-import {StyleTodoLayout} from "../components/todo/styles/_Todo.styled";
+import {StyledTodoLayout} from "../components/todo/styles/_Todo.styled";
 
 export default function _Todo() {
     const [todoList, setTodoList] = useState([]);
-    const [{todo}, onChange, inputReset] = useInput({todo: ""});
 
     useEffect(() => {
         fetchingTodoList();
@@ -24,29 +21,26 @@ export default function _Todo() {
         }
     }
 
-    const handeSubmit = async (event) => {
-        event.preventDefault();
+    const onRegisterTodo = async (newTodo) => {
         try {
-            const createTodo = {id: uuidv4(), todo};
             await fetch('/todo', {
                 method: 'POST',
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify(createTodo)
+                body: JSON.stringify(newTodo)
             });
-            inputReset();
             await fetchingTodoList();
         } catch (err) {
             console.log(err);
         }
     }
 
-    return <StyleTodoLayout>
+    return <StyledTodoLayout>
         <TodoHeader/>
-        <TodoList />
-        <TodoInput onSubmit={handeSubmit}/>
-    </StyleTodoLayout>
+        <TodoList todoList={todoList}/>
+        <TodoInput onRegisterTodo={onRegisterTodo}/>
+    </StyledTodoLayout>
 }
 
 
