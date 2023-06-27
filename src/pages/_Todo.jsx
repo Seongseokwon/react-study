@@ -13,7 +13,7 @@ export default function Todo() {
 
     const fetchingTodoList = async () => {
         try {
-            const response = await fetch('/todos');
+            const response = await fetch('http://localhost:5000/api/todo');
             const data = await response.json();
             setTodoList(data);
         } catch (err) {
@@ -21,9 +21,32 @@ export default function Todo() {
         }
     }
 
+    const onUpdateTodoStatus = async (todo) => {
+        console.log(todo);
+        setTodoList(prev => prev.map(prevTodo => prevTodo.id === todo.id ? {...prevTodo, completed: !todo.completed} : prevTodo))
+        try {
+            const response = await fetch('http://localhost:5000/api/todo', {
+                method: 'PATCH',
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(todo)
+            })
+            if (!response.ok) {
+                throw new Error(JSON.stringify(response));
+            }
+        } catch (err) {
+            console.log(err);
+            setTimeout(() => {
+                setTodoList(prev => prev.map(prevTodo => prevTodo.id === todo.id ? {...prevTodo, completed: todo.completed} : prevTodo))
+            }, 1000)
+
+        }
+    }
+
     const onRegisterTodo = async (newTodo) => {
         try {
-            await fetch('/todo', {
+            await fetch('http://localhost:5000/api/todo', {
                 method: 'POST',
                 headers: {
                     "Content-Type": "application/json"
@@ -38,7 +61,7 @@ export default function Todo() {
 
     return <StyledTodoLayout>
         <TodoHeader/>
-        <TodoList todoList={todoList}/>
+        <TodoList todoList={todoList} onUpdateTodoStatus={onUpdateTodoStatus}/>
         <TodoInput onRegisterTodo={onRegisterTodo}/>
     </StyledTodoLayout>
 }
