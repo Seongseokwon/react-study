@@ -4,7 +4,7 @@ import TodoInput from "../components/todo/_TodoInput";
 import TodoList from "../components/todo/_TodoList";
 import {StyledTodoLayout} from "../components/todo/styles/_Todo.styled";
 
-export default function _Todo() {
+export default function Todo() {
     const [todoList, setTodoList] = useState([]);
 
     useEffect(() => {
