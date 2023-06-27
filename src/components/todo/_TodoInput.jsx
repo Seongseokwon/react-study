@@ -15,7 +15,7 @@ export default function TodoInput({onRegisterTodo}) {
         onRegisterTodo(newTodo);
 
         inputReset();
-    }, [ todo ])
+    }, [ todo, onRegisterTodo, inputReset])
 
     return <form onSubmit={handleSubmit}>
         <input type="text" name="todo" value={todo} onChange={onChange}/>
