@@ -23,9 +23,10 @@ export default function Login() {
         password: "",
     });
 
-    const handleLogin = async () => {
-        setSpinnerShow(true);
+    const handleLogin = async (e) => {
+        e.preventDefault();
 
+        setSpinnerShow(true);
 
         try {
             const curUserInfo = await signInWithEmailAndPassword(
@@ -55,16 +56,8 @@ export default function Login() {
         }
     };
 
-    const handleSignup = async () => {
-        try {
-            const createUserInfo = await createUserWithEmailAndPassword(
-                authService,
-                email,
-                InputEncryption(password)
-            );
-        } catch (err) {
-            console.log(err);
-        }
+    const moveSignup = () => {
+        navigate('/signup')
     };
 
     return (
@@ -80,7 +73,7 @@ export default function Login() {
                 <FadeLoader color="#36d7b7"/>
             </div>}
 
-            <form action="">
+            <form onSubmit={handleLogin}>
                 <div>
                     <label htmlFor="email">Email</label>
                     <input
@@ -105,13 +98,13 @@ export default function Login() {
 
                 {/*  회원가입 및 로그인 버튼*/}
                 <div>
-                    <button type="button" onClick={handleLogin}>
+                    <button type="submit">
                         로그인
                     </button>
                     <button type="button" onClick={handleGoogleLogin}>
                         구글 로그인
                     </button>
-                    <button type="button" onClick={handleSignup}>
+                    <button type="button" onClick={moveSignup}>
                         회원가입
                     </button>
                 </div>

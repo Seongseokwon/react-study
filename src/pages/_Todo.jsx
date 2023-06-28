@@ -4,12 +4,9 @@ import TodoInput from "../components/todo/_TodoInput";
 import TodoList from "../components/todo/_TodoList";
 import {StyledTodoLayout} from "../components/todo/styles/_Todo.styled";
 
+
 export default function Todo() {
     const [todoList, setTodoList] = useState([]);
-
-    useEffect(() => {
-        fetchingTodoList();
-    }, [])
 
     const fetchingTodoList = async () => {
         try {
@@ -20,6 +17,10 @@ export default function Todo() {
             console.log(err);
         }
     }
+
+    useEffect(() => {
+        fetchingTodoList();
+    }, [])
 
     const onUpdateTodoStatus = async (todo) => {
         console.log(todo);
@@ -65,12 +66,3 @@ export default function Todo() {
         <TodoInput onRegisterTodo={onRegisterTodo}/>
     </StyledTodoLayout>
 }
-
-
-/*
-<Style.TodoLayout>
-    <TodoHeader />
-    <TodoContent />
-    <TodoInput />
-</Style.TodoLayout>
-*/
