@@ -28,9 +28,6 @@ export default function Main() {
             console.log('no match data');
         }
     }
-    const handleLogOut = () => {
-        fAuthService.signOut();
-    }
 
     return (
         <div>
