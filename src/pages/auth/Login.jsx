@@ -1,7 +1,6 @@
 import React from "react";
 import useInput from "../../hooks/useInput";
 import {
-  createUserWithEmailAndPassword,
   GoogleAuthProvider,
   signInWithEmailAndPassword,
   signInWithPopup,
@@ -23,18 +22,18 @@ export default function Login() {
         password: "",
     });
 
-    const handleLogin = async (e) => {
-        e.preventDefault();
+    const handleLogin = async (event) => {
+        event.preventDefault();
 
         setSpinnerShow(true);
 
         try {
-            const curUserInfo = await signInWithEmailAndPassword(
+            await signInWithEmailAndPassword(
                 authService,
                 email,
                 InputEncryption(password)
             );
-
+            setSpinnerShow(false);
             navigate('/todo')
         } catch (err) {
             console.log(err);

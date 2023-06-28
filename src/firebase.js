@@ -1,5 +1,6 @@
 import { initializeApp } from 'firebase/app'
-import { getAuth, setPersistence } from 'firebase/auth';
+import { getAuth } from 'firebase/auth';
+import { getFirestore } from 'firebase/firestore'
 
 const firebaseConfig = {
     apiKey: process.env.REACT_APP_FB_API_KEY,
@@ -10,5 +11,6 @@ const firebaseConfig = {
     appId: process.env.REACT_APP_FB_APP_ID
 }
 
-initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig);
 export const fAuthService = getAuth();
+export const fDbService = getFirestore(app);
