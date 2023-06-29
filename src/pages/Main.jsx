@@ -32,9 +32,7 @@ export default function Main() {
 
     return (
         <StyledMainLayout>
-            <div>
-                Main 입니다.
-            </div>
+            <h1> Today Todo 지금 시작해보세요 </h1>
             <Link to="signin"> 시작하기</Link>
         </StyledMainLayout>
     );
