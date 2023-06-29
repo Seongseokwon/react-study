@@ -12,6 +12,7 @@ import {spinnerState} from "../../recoil/spinner/atoms";
 import {useNavigate} from "react-router-dom";
 import InputEncryption from "../../utils/inputEncryption";
 import {StyledAuthLayout} from "../../components/styles/Auth.styled";
+import {Button, StyledCommonButtonGroup, StyledCommonInputGroup} from "../../components/styles/Common.styled";
 
 export default function Login() {
     const authService = fAuthService;
@@ -75,7 +76,7 @@ export default function Login() {
 
             <StyledAuthLayout>
                 <form onSubmit={handleLogin}>
-                    <div>
+                    <StyledCommonInputGroup>
                         <label htmlFor="email">Email</label>
                         <input
                             id="email"
@@ -84,9 +85,9 @@ export default function Login() {
                             value={email}
                             onChange={onChange}
                         />
-                    </div>
+                    </StyledCommonInputGroup>
 
-                    <div>
+                    <StyledCommonInputGroup>
                         <label htmlFor="password">Password</label>
                         <input
                             id="password"
@@ -95,20 +96,20 @@ export default function Login() {
                             value={password}
                             onChange={onChange}
                         />
-                    </div>
+                    </StyledCommonInputGroup>
 
                     {/*  회원가입 및 로그인 버튼*/}
-                    <div>
-                        <button type="submit">
+                    <StyledCommonButtonGroup>
+                        <Button type="submit">
                             로그인
-                        </button>
-                        <button type="button" onClick={handleGoogleLogin}>
+                        </Button>
+                        <Button type="button" onClick={handleGoogleLogin}>
                             구글 로그인
-                        </button>
-                        <button type="button" onClick={moveSignup}>
+                        </Button>
+                        <Button type="button" onClick={moveSignup}>
                             회원가입
-                        </button>
-                    </div>
+                        </Button>
+                    </StyledCommonButtonGroup>
                 </form>
             </StyledAuthLayout>
         </>

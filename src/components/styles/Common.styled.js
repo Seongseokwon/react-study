@@ -15,3 +15,29 @@ export const StyledCommonLayout = styled.div`
   justify-content: center;
   align-items: center;
 `
+
+export const StyledCommonInputGroup = styled.div`
+  
+  
+  display: flex;
+  
+  & > label {
+    width: 150px;
+  }
+  
+  & > input {
+    width: 350px;
+  }
+  
+  
+`
+
+
+export const StyledCommonButtonGroup = styled.div`
+  border: 1px solid red;
+  display: flex;
+  flex-direction: column;
+  margin-top: 30px;
+`
+
+export const Button = styled.button``
