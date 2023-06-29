@@ -5,6 +5,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { RecoilRoot } from 'recoil';
 import { BrowserRouter } from 'react-router-dom';
+import {GlobalStyle} from "./styles/global-style";
 
 
 /*
@@ -16,6 +17,7 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <BrowserRouter>
         <RecoilRoot>
+            <GlobalStyle/>
             <App />
         </RecoilRoot>
     </BrowserRouter>

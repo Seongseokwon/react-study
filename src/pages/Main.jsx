@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import {Link, useNavigate} from 'react-router-dom';
 import {fAuthService, fDbService} from '../firebase'
 import {doc, getDoc} from 'firebase/firestore'
+import {StyledMainLayout} from "../components/styles/Main.styled";
 export default function Main() {
     const navigate = useNavigate();
 
@@ -30,10 +31,12 @@ export default function Main() {
     }
 
     return (
-        <div>
-            Main 입니다.
+        <StyledMainLayout>
+            <div>
+                Main 입니다.
+            </div>
             <Link to="signin"> 시작하기</Link>
-        </div>
+        </StyledMainLayout>
     );
 }
 
