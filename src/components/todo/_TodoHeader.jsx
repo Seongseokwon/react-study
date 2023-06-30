@@ -1,12 +1,16 @@
 import {StyledTodoHeader} from "./styles/_Todo.styled";
 
 import {fAuthService} from "../../firebase";
+import {useNavigate} from "react-router-dom";
 
 export default function TodoHeader() {
+    const navigate = useNavigate();
     const handleLogout = async (event) => {
         event.preventDefault();
-        console.log('logout')
-        await fAuthService.signOut()
+        sessionStorage.removeItem('USER_INFO');
+        await fAuthService.signOut();
+        navigate('/');
+
     }
 
     return <StyledTodoHeader>

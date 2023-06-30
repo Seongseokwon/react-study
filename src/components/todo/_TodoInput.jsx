@@ -11,7 +11,7 @@ export default function TodoInput({onRegisterTodo}) {
     const handleSubmit = useCallback((event) => {
         event.preventDefault();
 
-        const newTodo = {id: uuidV4(), todo}
+        const newTodo = {id: uuidV4(), todo, completed: false, createdAt: new Date()}
         onRegisterTodo(newTodo);
 
         inputReset();

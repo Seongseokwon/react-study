@@ -4,6 +4,8 @@ import {
   GoogleAuthProvider,
   signInWithEmailAndPassword,
   signInWithPopup,
+    setPersistence,
+    inMemoryPersistence
 } from "firebase/auth";
 import {fAuthService} from "../../firebase";
 import {FadeLoader} from "react-spinners";
@@ -30,13 +32,13 @@ export default function Login() {
         setSpinnerShow(true);
 
         try {
+            await setPersistence(authService, inMemoryPersistence)
             await signInWithEmailAndPassword(
                 authService,
                 email,
                 InputEncryption(password)
             );
             setSpinnerShow(false);
-            navigate('/todo')
         } catch (err) {
             console.log(err);
             setSpinnerShow(false);

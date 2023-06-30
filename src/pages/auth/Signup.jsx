@@ -6,14 +6,16 @@ import {fAuthService, fDbService} from "../../firebase";
 import {collection, setDoc, doc} from 'firebase/firestore';
 import InputEncryption from "../../utils/inputEncryption";
 import {StyledAuthLayout} from "../../components/styles/Auth.styled";
+import {StyledCommonInputGroup} from "../../components/styles/Common.styled";
 
 export default function Signup() {
     const navigate = useNavigate();
 
-    const [{userName, email, password}, onChange, inputReset] = useInput({
+    const [{userName, email, password, exposed}, onChange, inputReset] = useInput({
         userName: "",
         email: "",
         password: "",
+        exposed: "false"
     });
     const handleSignup = async (event) => {
         event.preventDefault();
@@ -23,9 +25,10 @@ export default function Signup() {
             const usersRef = collection(fDbService, "users");
             await setDoc(doc(usersRef, regUserInfo.user.uid), {
                 userName,
-                email
+                email,
+                exposed: exposed === 'true'
             });
-            navigate(-1);
+            navigate('/login');
         } catch (e) {
             console.log(e);
         }
@@ -33,23 +36,28 @@ export default function Signup() {
 
     return <StyledAuthLayout>
         <form onSubmit={handleSignup}>
-            <div>
+            <StyledCommonInputGroup>
                 <label htmlFor="userName">Username</label>
                 <input id="userName" type="text" name="userName" value={userName} onChange={onChange}/>
-            </div>
-            <div>
+            </StyledCommonInputGroup>
+            <StyledCommonInputGroup>
                 <label htmlFor="email">Email</label>
                 <input id="email" type="text" name="email" value={email} onChange={onChange}/>
-            </div>
-            <div>
+            </StyledCommonInputGroup>
+            <StyledCommonInputGroup>
                 <label htmlFor="password">Password</label>
                 <input id="password" type="password" name="password" value={password} onChange={onChange}/>
-            </div>
+            </StyledCommonInputGroup>
+            <StyledCommonInputGroup>
+                <label htmlFor="exposed">Exposed</label>
+                <input type="radio" name="exposed" value="true" onChange={onChange} checked={exposed === 'true'}/>
+                <input type="radio" name="exposed" value="false" onChange={onChange} checked={exposed === 'false'}/>
+            </StyledCommonInputGroup>
             {/* btn group*/}
-            <div>
+            <StyledCommonInputGroup>
                 <button type="button" onClick={() => navigate(-1)}>이전으로</button>
                 <button type="submit">완료</button>
-            </div>
+            </StyledCommonInputGroup>
         </form>
     </StyledAuthLayout>
 }

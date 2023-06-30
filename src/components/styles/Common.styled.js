@@ -29,7 +29,7 @@ export const StyledCommonInputGroup = styled.div`
     font-weight: bold;
   }
 
-  & > input {
+  & > input:not([type=radio]) {
     width: 350px;
     padding: 5px;
     height: 35px;
