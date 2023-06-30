@@ -28,7 +28,7 @@ export default function Signup() {
                 email,
                 exposed: exposed === 'true'
             });
-            navigate('/login');
+            navigate('/signin');
         } catch (e) {
             console.log(e);
         }

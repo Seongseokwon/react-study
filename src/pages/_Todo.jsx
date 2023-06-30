@@ -3,7 +3,7 @@ import TodoHeader from "../components/todo/_TodoHeader";
 import TodoInput from "../components/todo/_TodoInput";
 import TodoList from "../components/todo/_TodoList";
 import {StyledTodoLayout} from "../components/todo/styles/_Todo.styled";
-import {doc, setDoc, collection} from 'firebase/firestore'
+import {doc, setDoc, getDocs, collection} from 'firebase/firestore'
 import {fDbService} from "../firebase";
 import {useRecoilValue} from "recoil";
 import {userStateAtom} from "../recoil/user/atoms";
@@ -14,13 +14,11 @@ export default function Todo() {
     const userState = useRecoilValue(userStateAtom);
 
     const fetchingTodoList = async () => {
-        /*try {
-            const response = await fetch('http://localhost:5000/api/todo');
-            const data = await response.json();
-            setTodoList(data);
-        } catch (err) {
-            console.log(err);
-        }*/
+        const querySnapshot = await getDocs(collection(fDbService, "users", userInfo.uid, "todos"));
+        querySnapshot.forEach((doc) => {
+            // doc.data() is never undefined for query doc snapshots
+            console.log(doc.id, " => ", doc.data());
+        });
     }
 
     useEffect(() => {
@@ -30,9 +28,11 @@ export default function Todo() {
 
     const getUserInfo = () => {
         if (JSON.parse(sessionStorage.getItem('USER_INFO'))) {
-            const {userInfo} = JSON.parse(sessionStorage.getItem('USER_INFO'));
+            const userInfo = JSON.parse(sessionStorage.getItem('USER_INFO'));
+            console.log('SESSION', userInfo);
             setUserInfo(prev => ({...prev, ...userInfo}));
         } else {
+            console.log('RECOIL', userState);
             setUserInfo(prev => ({...prev, ...userState}));
         }
     }
@@ -67,9 +67,7 @@ export default function Todo() {
 
     const onRegisterTodo = async (newTodo) => {
         try {
-            // await setDoc(doc(fDbService, "todos", userInfo.uid), newTodo);
             const todosRef = doc(collection(fDbService, "users/" + userInfo.uid + "/todos"));
-
             await setDoc(todosRef, newTodo);
         } catch (err) {
             console.log(err);

@@ -1,10 +1,11 @@
-import { useEffect } from 'react';
+import {useEffect} from 'react';
 import {Link, useNavigate} from 'react-router-dom';
 import {fAuthService, fDbService} from '../firebase'
 import {doc, getDoc} from 'firebase/firestore'
 import {StyledMainLayout} from "../components/styles/Main.styled";
-import {useRecoilState, useSetRecoilState} from "recoil";
+import {useSetRecoilState} from "recoil";
 import {userStateAtom} from "../recoil/user/atoms";
+
 export default function Main() {
     const navigate = useNavigate();
     const setUserState = useSetRecoilState(userStateAtom)
@@ -25,7 +26,7 @@ export default function Main() {
 
         if (userSnap.exists()) {
             const userInfo = {...userSnap.data(), uid}
-
+            console.log(userInfo);
             setUserState(prev => ({...prev, ...userInfo}))
             sessionStorage.setItem("USER_INFO", JSON.stringify(userInfo));
             navigate('/todo');
