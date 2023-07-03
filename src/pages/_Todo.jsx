@@ -15,22 +15,25 @@ export default function Todo() {
 
     const fetchingTodoList = async () => {
         const querySnapshot = await getDocs(collection(fDbService, "users", userInfo.uid, "todos"));
+        const tempData = [];
         querySnapshot.forEach((doc) => {
             // doc.data() is never undefined for query doc snapshots
             console.log(doc.id, " => ", doc.data());
+            tempData.push(doc.data());
         });
+        setTodoList(tempData);
     }
 
     useEffect(() => {
-        fetchingTodoList();
         getUserInfo();
+        fetchingTodoList();
     }, [])
 
     const getUserInfo = () => {
+        console.log(sessionStorage.getItem('USER_INFO'));
         if (JSON.parse(sessionStorage.getItem('USER_INFO'))) {
-            const userInfo = JSON.parse(sessionStorage.getItem('USER_INFO'));
-            console.log('SESSION', userInfo);
-            setUserInfo(prev => ({...prev, ...userInfo}));
+            const uInfo = JSON.parse(sessionStorage.getItem('USER_INFO'));
+            setUserInfo(prev => ({...prev, ...uInfo}));
         } else {
             console.log('RECOIL', userState);
             setUserInfo(prev => ({...prev, ...userState}));
@@ -69,6 +72,7 @@ export default function Todo() {
         try {
             const todosRef = doc(collection(fDbService, "users/" + userInfo.uid + "/todos"));
             await setDoc(todosRef, newTodo);
+            fetchingTodoList();
         } catch (err) {
             console.log(err);
         }
