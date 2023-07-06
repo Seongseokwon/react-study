@@ -49,9 +49,9 @@ export default function Signup() {
                 <input id="password" type="password" name="password" value={password} onChange={onChange}/>
             </StyledCommonInputGroup>
             <StyledCommonInputGroup>
-                <label htmlFor="exposed">Exposed</label>
-                <input type="radio" name="exposed" value="true" onChange={onChange} checked={exposed === 'true'}/>
-                <input type="radio" name="exposed" value="false" onChange={onChange} checked={exposed === 'false'}/>
+                <label>Exposed</label>
+                <label htmlFor="">노출</label><input type="radio" name="exposed" value="true" onChange={onChange} checked={exposed === 'true'}/>
+                <label htmlFor="">비노출</label><input type="radio" name="exposed" value="false" onChange={onChange} checked={exposed === 'false'}/>
             </StyledCommonInputGroup>
             {/* btn group*/}
             <StyledCommonInputGroup>

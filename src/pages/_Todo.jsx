@@ -1,9 +1,8 @@
 import {useEffect, useState} from "react";
-import TodoHeader from "../components/todo/_TodoHeader";
 import TodoInput from "../components/todo/_TodoInput";
 import TodoList from "../components/todo/_TodoList";
 import {StyledTodoLayout} from "../components/todo/styles/_Todo.styled";
-import {doc, setDoc, getDocs, collection, query, where, orderBy} from 'firebase/firestore'
+import {doc, setDoc, getDocs, collection, query, where, orderBy, updateDoc} from 'firebase/firestore'
 import {fDbService} from "../firebase";
 import {useRecoilValue} from "recoil";
 import {userStateAtom} from "../recoil/user/atoms";
@@ -14,7 +13,6 @@ export default function Todo() {
     const userState = useRecoilValue(userStateAtom);
 
     const fetchingTodoList = async () => {
-
         const q = query(collection(fDbService, `users/${userInfo.uid}/todos`), orderBy('createdAt', 'desc'));
         const querySnapshot = await getDocs(q)
         const tempData = [];
@@ -31,7 +29,7 @@ export default function Todo() {
     }, [])
 
     useEffect(() => {
-        if (userInfo ){
+        if (userInfo) {
             fetchingTodoList();
         }
     }, [userInfo])
@@ -44,39 +42,31 @@ export default function Todo() {
             setUserInfo(prev => ({...prev, ...userState}));
         }
     }
-    const onUpdateTodoStatus = async (todo) => {
-        console.log(todo);
+
+    const optimisticTodoStatusUpdate = (todo, flag) => {
         setTodoList(prev => prev.map(prevTodo => prevTodo.id === todo.id ? {
             ...prevTodo,
-            completed: !todo.completed
+            completed: flag ? !todo.completed : todo.completed
         } : prevTodo))
+    }
+
+    const onUpdateTodoStatus = async (todo) => {
         try {
-            const response = await fetch('http://localhost:5000/api/todo', {
-                method: 'PATCH',
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(todo)
+            optimisticTodoStatusUpdate(todo, true);
+            const todoRef = doc(fDbService, `users/${userInfo.uid}/todos/${todo.id}`);
+            await updateDoc(todoRef, {
+                completed: !todo.completed
             })
-            if (!response.ok) {
-                throw new Error(JSON.stringify(response));
-            }
         } catch (err) {
             console.log(err);
-            setTimeout(() => {
-                setTodoList(prev => prev.map(prevTodo => prevTodo.id === todo.id ? {
-                    ...prevTodo,
-                    completed: todo.completed
-                } : prevTodo))
-            }, 1000)
-
+            optimisticTodoStatusUpdate(todo, false);
         }
+
     }
 
     const onRegisterTodo = async (newTodo) => {
         try {
-            const todosRef = doc(collection(fDbService, "users/" + userInfo.uid + "/todos"));
-            await setDoc(todosRef, newTodo);
+            await setDoc(doc(fDbService, `users/${userInfo.uid}/todos/${newTodo.id}`), newTodo);
             fetchingTodoList();
         } catch (err) {
             console.log(err);
@@ -84,7 +74,6 @@ export default function Todo() {
     }
 
     return <StyledTodoLayout>
-        <TodoHeader/>
         <TodoList todoList={todoList} onUpdateTodoStatus={onUpdateTodoStatus}/>
         <TodoInput onRegisterTodo={onRegisterTodo}/>
     </StyledTodoLayout>
