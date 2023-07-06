@@ -1,18 +1,20 @@
-import { useState, useCallback } from "react";
+import {useEffect} from "react";
+import {useRecoilState} from "recoil";
+import {userStateAtom} from "../../recoil/user/atoms";
 
-const useAuthentication = (value) => {
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-    const onLoginSuccess = useCallback((userInfo) => {
-        console.log(userInfo);
-        window.sessionStorage.setItem('')
-    });
+const useAuthentication = () => {
+    const [userInfo, setUserInfo] = useRecoilState(userStateAtom);
 
-    const onLogOut = useCallback(() => {
+    useEffect(() => {
+        console.log(sessionStorage.getItem('USER_INFO'));
+        if (sessionStorage.getItem('USER_INFO')) {
+            const uInfo = JSON.parse(sessionStorage.getItem('USER_INFO'));
+            setUserInfo(prev => ({...prev, ...uInfo}));
+        }
+    },[])
 
-    });
-
-    return [onLoginSuccess, onLogOut];
+    return {userInfo};
 }
 
 export default useAuthentication;

@@ -21,7 +21,7 @@ export default function Signup() {
         event.preventDefault();
         try {
             const regUserInfo = await createUserWithEmailAndPassword(fAuthService, email, InputEncryption(password));
-
+            await fAuthService.signOut();
             const usersRef = collection(fDbService, "users");
             await setDoc(doc(usersRef, regUserInfo.user.uid), {
                 userName,

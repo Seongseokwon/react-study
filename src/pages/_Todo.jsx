@@ -6,13 +6,15 @@ import {doc, setDoc, getDocs, collection, query, where, orderBy, updateDoc} from
 import {fDbService} from "../firebase";
 import {useRecoilValue} from "recoil";
 import {userStateAtom} from "../recoil/user/atoms";
+import useAuthentication from "../hooks/auth/useAuthentication";
 
 export default function Todo() {
-    const [userInfo, setUserInfo] = useState(null);
-    const [todoList, setTodoList] = useState([]);
+    const {userInfo} = useAuthentication();
     const userState = useRecoilValue(userStateAtom);
+    const [todoList, setTodoList] = useState([]);
 
     const fetchingTodoList = async () => {
+
         const q = query(collection(fDbService, `users/${userInfo.uid}/todos`), orderBy('createdAt', 'desc'));
         const querySnapshot = await getDocs(q)
         const tempData = [];
@@ -25,23 +27,11 @@ export default function Todo() {
     }
 
     useEffect(() => {
-        getUserInfo();
-    }, [])
-
-    useEffect(() => {
+        console.log(userState);
         if (userInfo) {
             fetchingTodoList();
         }
-    }, [userInfo])
-
-    const getUserInfo = () => {
-        if (JSON.parse(sessionStorage.getItem('USER_INFO'))) {
-            const uInfo = JSON.parse(sessionStorage.getItem('USER_INFO'));
-            setUserInfo(prev => ({...prev, ...uInfo}));
-        } else {
-            setUserInfo(prev => ({...prev, ...userState}));
-        }
-    }
+    }, [userState])
 
     const optimisticTodoStatusUpdate = (todo, flag) => {
         setTodoList(prev => prev.map(prevTodo => prevTodo.id === todo.id ? {
@@ -60,6 +50,7 @@ export default function Todo() {
         } catch (err) {
             console.log(err);
             optimisticTodoStatusUpdate(todo, false);
+
         }
 
     }
