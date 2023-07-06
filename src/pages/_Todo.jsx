@@ -3,7 +3,7 @@ import TodoHeader from "../components/todo/_TodoHeader";
 import TodoInput from "../components/todo/_TodoInput";
 import TodoList from "../components/todo/_TodoList";
 import {StyledTodoLayout} from "../components/todo/styles/_Todo.styled";
-import {doc, setDoc, getDocs, collection} from 'firebase/firestore'
+import {doc, setDoc, getDocs, collection, query, where, orderBy} from 'firebase/firestore'
 import {fDbService} from "../firebase";
 import {useRecoilValue} from "recoil";
 import {userStateAtom} from "../recoil/user/atoms";
@@ -14,7 +14,9 @@ export default function Todo() {
     const userState = useRecoilValue(userStateAtom);
 
     const fetchingTodoList = async () => {
-        const querySnapshot = await getDocs(collection(fDbService, "users", userInfo.uid, "todos"));
+
+        const q = query(collection(fDbService, `users/${userInfo.uid}/todos`), orderBy('createdAt', 'desc'));
+        const querySnapshot = await getDocs(q)
         const tempData = [];
         querySnapshot.forEach((doc) => {
             // doc.data() is never undefined for query doc snapshots
@@ -26,16 +28,19 @@ export default function Todo() {
 
     useEffect(() => {
         getUserInfo();
-        fetchingTodoList();
     }, [])
 
+    useEffect(() => {
+        if (userInfo ){
+            fetchingTodoList();
+        }
+    }, [userInfo])
+
     const getUserInfo = () => {
-        console.log(sessionStorage.getItem('USER_INFO'));
         if (JSON.parse(sessionStorage.getItem('USER_INFO'))) {
             const uInfo = JSON.parse(sessionStorage.getItem('USER_INFO'));
             setUserInfo(prev => ({...prev, ...uInfo}));
         } else {
-            console.log('RECOIL', userState);
             setUserInfo(prev => ({...prev, ...userState}));
         }
     }

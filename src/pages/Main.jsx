@@ -16,6 +16,7 @@ export default function Main() {
                 console.log(user.uid);
                 console.log('유저 정보 O');
                 setUserInformation(user.uid);
+
             }
         })
     }, []);
